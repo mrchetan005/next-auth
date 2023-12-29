@@ -23,7 +23,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
 				user: process.env.MAILER_AUTH_USER,
 				pass: process.env.MAILER_AUTH_PASS,
 			},
-		});
+		} as nodemailer.TransportOptions);
 		const mailOptions = {
 			from: "abc@xyz.com",
 			to: email,
@@ -31,15 +31,15 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
 				emailType === "VERIFY"
 					? `Please verify your email`
 					: `Reset your password`,
-			html: `<p>Click <a href="${
-				process.env.DOMAIN
-			}/user/${emailType === "VERIFY"
-			?'verifyemail':'reset-password'}?token=${hashedToken}">here</a> to ${
+			html: `<p>Click <a href="${process.env.DOMAIN}/user/${
+				emailType === "VERIFY" ? "verifyemail" : "reset-password"
+			}?token=${hashedToken}">here</a> to ${
 				emailType === "VERIFY" ? "verify your email" : "reset your password"
 			} or copy paste the link below in your browser. <br/>${
 				process.env.DOMAIN
-			}/user/${emailType === "VERIFY"
-			?'verifyemail':'reset-password'}?token=${hashedToken}</p>`,
+			}/user/${
+				emailType === "VERIFY" ? "verifyemail" : "reset-password"
+			}?token=${hashedToken}</p>`,
 		};
 		const mailResponse = await transport.sendMail(mailOptions);
 		return mailResponse;
